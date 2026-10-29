@@ -20,3 +20,14 @@ export const saveNewStationService=async(fuelStationDTO:FuelStationDTO | null,us
          return savedStation;
     
 }
+
+export const getUserStationDetailsService=async(userId:Types.ObjectId)=>{
+    if(!userId){
+        throw new Error ("user is not found")
+    }
+    const stationDetails=await fuelStation.find({owner:userId});
+    if(!stationDetails){
+        throw new Error("user not yet regiterd the filling station")
+    }
+     return stationDetails;
+}
