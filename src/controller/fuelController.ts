@@ -6,12 +6,12 @@ export const UpdateFuelDetails=async(req:AuthRequest,res:Response)=>{
     try{
          const stationId = req.params.stationId as string;
         const { fuels } = req.body;
-        console.log(stationId,"idddddd")
-        // if(!stationId){
-        //     throw new Error("station id not found")
-        // }
+      
         const updateFuelDetails=UpdateFuelDetailsService(stationId,fuels);
-        console.log("updateFuelDetails", updateFuelDetails)
+        res.status(200).json({
+                message:"fuel details update successfully",
+                station:updateFuelDetails
+            });
     }catch(error){
         console.log(error)
             const message=error instanceof Error ? error.message : "something went wrong"

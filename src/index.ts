@@ -9,6 +9,7 @@ import mongoose from "mongoose";
 import authRouter from "./routes/authRoute";
 import stationRouter from "./routes/fuelStationRoute";
 import fuelRouter from "./routes/fuelRoute";
+import logOutRouter from "./routes/logOutRoute";
 
 
 const MONGO_URL = process.env.MONGO_URI || ""
@@ -34,6 +35,7 @@ app.use("/api",userRouter);
 app.use("/api",authRouter)
 app.use("/api",stationRouter)
 app.use("/api",fuelRouter)
+app.use("/api",logOutRouter)
 app.use((err:Error ,req:Request, res:Response, next:NextFunction) => {
   console.log(err.message);
   res.status(500).json({ message:err.message });
