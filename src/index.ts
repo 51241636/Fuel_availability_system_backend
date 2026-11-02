@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import authRouter from "./routes/authRoute";
 import stationRouter from "./routes/fuelStationRoute";
+import fuelRouter from "./routes/fuelRoute";
 
 
 const MONGO_URL = process.env.MONGO_URI || ""
@@ -16,7 +17,7 @@ const PORT: number = Number(process.env.PORT) || 3000;
 const app = express();
 const corsOptions: cors.CorsOptions = {
   origin: 'http://localhost:5173', // Allow only your React app's origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true // Allow to transfer cookies with cross origin requests
 };
@@ -32,6 +33,7 @@ connectDB()
 app.use("/api",userRouter);
 app.use("/api",authRouter)
 app.use("/api",stationRouter)
+app.use("/api",fuelRouter)
 app.use((err:Error ,req:Request, res:Response, next:NextFunction) => {
   console.log(err.message);
   res.status(500).json({ message:err.message });

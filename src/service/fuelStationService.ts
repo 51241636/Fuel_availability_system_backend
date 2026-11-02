@@ -31,3 +31,23 @@ export const getUserStationDetailsService=async(userId:Types.ObjectId)=>{
     }
      return stationDetails;
 }
+
+
+export const updateUserStationDetails=async(fuelStationDTO : FuelStationDTO | null,userId:Types.ObjectId)=>{
+    if(!fuelStationDTO){
+        throw new Error("fuel station details not found")
+    }
+    const stationData:IStation ={
+        owner:userId,stationName:fuelStationDTO?.stationName,stationContact:fuelStationDTO?.stationContact,stationEmail:fuelStationDTO.stationEmail,stationAddress:fuelStationDTO.stationAddress,location:fuelStationDTO.location,fuels:fuelStationDTO.fuels,openTime:fuelStationDTO.openTime,closeTime:fuelStationDTO.closeTime,available:true
+    }
+
+    const updateFillingDetail=await fuelStation.findByIdAndUpdate(fuelStationDTO.stationId,stationData,{
+        new :true,//eturns the modified document rather than the original
+        runValidators:true//ensure the update compiles with your mongoose scema rules
+    })
+
+    if(!updateFillingDetail){
+        throw new Error("fuel station not updated successfully")
+    }
+    return updateFillingDetail;
+}
