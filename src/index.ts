@@ -10,6 +10,7 @@ import authRouter from "./routes/authRoute";
 import stationRouter from "./routes/fuelStationRoute";
 import fuelRouter from "./routes/fuelRoute";
 import logOutRouter from "./routes/logOutRoute";
+import path from "path";
 
 
 const MONGO_URL = process.env.MONGO_URI || ""
@@ -28,6 +29,11 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use(cookieParser())
+
+app.use(
+    "/uploads",
+    express.static(path.join(process.cwd(), "uploads"))
+);
 
 connectDB()
 

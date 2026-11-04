@@ -31,6 +31,10 @@ const userSchema=new Schema<IUser>({
         type: String,
         required: true
     },
+    image: {
+        type: String,
+        default: null
+    },
     userRole: {
         type: String,
         // enum:Object.values(userRoles),

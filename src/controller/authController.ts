@@ -69,7 +69,8 @@ export const getMyDetails=async(req:AuthRequest,res:Response)=>{
         }
     const loggedUserDetail=await getMyDetailsService(req.userId);
      res.status(200).json({
-            myDetails:loggedUserDetail
+            myDetails:loggedUserDetail,
+            image:loggedUserDetail?.image ? `http://localhost:3000/uploads/${loggedUserDetail.image}` : null
         });
      
     }catch(error){

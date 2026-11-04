@@ -9,6 +9,7 @@ export default interface IUser {
     address:string;
     contact:string;
     password: string;
+    image?: string;
     userRole:string
     userStatus:statusManage
 }
