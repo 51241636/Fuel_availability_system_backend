@@ -21,12 +21,6 @@ export const updateUserSerivice=async(userDTO:UserDTO|null,imagePath:string | un
      if(!findUser){
          throw new Error("User not found");
      }
-
-    //   const saltRound=Number(process.env.SALTROUND);
-    //          if(!saltRound){
-    //      throw new Error("password cant hashed salt round is null because cant save user")
-    //    }
-    //    const hashedPassword=await bcrypt.hash("pasindu2005",saltRound);
           const userData : Partial<IUser> ={
                 name:userDTO.name,email:userDTO.email,address:userDTO.address,contact:userDTO.contact,image:imagePath,userStatus:statusManage.ACTIVE
         }

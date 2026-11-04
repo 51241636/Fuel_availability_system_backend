@@ -49,7 +49,7 @@ export const saveUserService=async(userDTO:UserDTO|null)=>{
   if(userDTO === null){
     throw new Error("User details not entered");
   }
-  const saltRound=process.env.SALTROUND;
+  const saltRound=Number(process.env.SALTROUND);
   if(!saltRound){
     throw new Error("password cant hashed salt round is null because cant save user")
   }
