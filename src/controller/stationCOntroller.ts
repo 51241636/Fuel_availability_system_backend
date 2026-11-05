@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { FuelStationDTO } from "../DTO/fuelStationDTO";
-import { getUserStationDetailsService, saveNewStationService, updateUserStationDetails } from "../service/fuelStationService";
+import { GetAllStation, getUserStationDetailsService, saveNewStationService, updateUserStationDetails } from "../service/fuelStationService";
 import { AuthRequest } from "../middlewares/authMiddleware";
 import { Types } from "mongoose";
 
@@ -64,4 +64,21 @@ export const updateFillingDetail=async(req:AuthRequest,res:Response)=>{
                  message
             })
     }
+}
+
+export const getAllStation=async(req:AuthRequest,res:Response)=>{
+try{
+    const allStations=await GetAllStation();
+     res.status(200).json({
+                    message:"get all fuelStations successfully",
+                    allStations:allStations
+                });
+}catch(error){
+    const message=error instanceof Error ? error.message : "something went wrong"
+            const status =404
+            return res.status(status).json({
+                 success:false,
+                 message
+            })
+}
 }

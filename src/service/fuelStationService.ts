@@ -51,3 +51,15 @@ export const updateUserStationDetails=async(fuelStationDTO : FuelStationDTO | nu
     }
     return updateFillingDetail;
 }
+
+export const GetAllStation=async()=>{
+    try{
+        const allStation=await fuelStation.find({})
+        if(!allStation){
+            throw new Error("registerd stations not found")
+        }
+        return allStation;
+    }catch(error){
+        throw error
+    }
+}
