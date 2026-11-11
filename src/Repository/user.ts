@@ -5,7 +5,11 @@ import { statusManage } from "../enums/statusManage";
 
 
 const userSchema=new Schema<IUser>({
-    name:{
+     firstName:{
+        type:String,
+        required:true
+    },
+    userName:{
         type:String,
         required:true
     },
@@ -39,6 +43,12 @@ const userSchema=new Schema<IUser>({
         type: String,
         // enum:Object.values(userRoles),
         required: true
+    },
+    paymentStatus:{
+        type: String,
+        required: true,
+        default:"PENDING"
+
     },
     userStatus: {
         type: String,

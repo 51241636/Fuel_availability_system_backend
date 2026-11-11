@@ -9,11 +9,12 @@ import { generateAccessToken, generateRefreshToken, JwtPayload } from "../util/j
 
 export const loginService=async(authDTO:AuthDTO)=>{
  try{
-      console.log("wait01 : ", authDTO.username)
      if (!authDTO.username?.trim()|| !authDTO.password?.trim()) {
         throw new Error("username and password required")
     }
-        const loginUserDetails=await user.findOne({name:authDTO.username,userRole:authDTO.role});
+        const loginUserDetails=await user.findOne({userName:authDTO.username,userRole:authDTO.role});
+
+        await console.log("login user details : ",loginUserDetails);
         
          if (!loginUserDetails || loginUserDetails.userRole !== authDTO.role) {
             console.log("User not found or role does not match");
@@ -54,10 +55,18 @@ export const saveUserService=async(userDTO:UserDTO|null)=>{
     throw new Error("password cant hashed salt round is null because cant save user")
   }
   const hashedPassword=await bcrypt.hash(userDTO.password,saltRound);
-
-  const userData : IUser ={
-                name:userDTO.name,email:userDTO.email,address:userDTO.address,contact:userDTO.contact,password:hashedPassword,userRole:userDTO.userRole,userStatus:statusManage.ACTIVE
+    let userData: IUser;
+  if(userDTO.userRole =="owner"){
+      userData={
+                firstName:userDTO.firstName,userName:userDTO.userName,email:userDTO.email,address:userDTO.address,contact:userDTO.contact,password:hashedPassword,userRole:userDTO.userRole,paymentStatus:"PENDING",userStatus:statusManage.ACTIVE
         }
+  }else{
+     userData ={
+                firstName:userDTO.firstName,userName:userDTO.userName,email:userDTO.email,address:userDTO.address,contact:userDTO.contact,password:hashedPassword,userRole:userDTO.userRole,paymentStatus:"NO PAYMENT",userStatus:statusManage.ACTIVE
+        }
+  }
+
+  
         if(!userData){
             throw new Error("user data not added correctly")
         }

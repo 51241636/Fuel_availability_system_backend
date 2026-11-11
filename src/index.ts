@@ -11,6 +11,7 @@ import stationRouter from "./routes/fuelStationRoute";
 import fuelRouter from "./routes/fuelRoute";
 import logOutRouter from "./routes/logOutRoute";
 import path from "path";
+import paymentRouter from "./routes/paymentRoute";
 
 
 const MONGO_URL = process.env.MONGO_URI || ""
@@ -28,12 +29,15 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
+app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser())
 
 app.use(
     "/uploads",
     express.static(path.join(process.cwd(), "uploads"))
 );
+
 
 connectDB()
 
@@ -42,6 +46,7 @@ app.use("/api",authRouter)
 app.use("/api",stationRouter)
 app.use("/api",fuelRouter)
 app.use("/api",logOutRouter)
+app.use("/api",paymentRouter)
 app.use((err:Error ,req:Request, res:Response, next:NextFunction) => {
   console.log(err.message);
   res.status(500).json({ message:err.message });
