@@ -21,11 +21,21 @@ const MONGO_URL = process.env.MONGO_URI || "";
 const PORT: number = Number(process.env.PORT) || 3000;
 
 const app = express();
+const allowedOrigins = [
+  "https://fuel-availability-system-frontend.vercel.app",
+  "https://fuel-availability-system-frontend-z5og-7ichj0qeu-pis9.vercel.app",
+  "http://localhost:5173",
+];
+
 const corsOptions: cors.CorsOptions = {
-  origin: "https://fuel-availability-system-frontend.vercel.app", // Allow only your React app's origin
-  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true, // Allow to transfer cookies with cross origin requests
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("CORS not allowed"));
+    }
+  },
+  credentials: true,
 };
 app.use(cors(corsOptions));
 
