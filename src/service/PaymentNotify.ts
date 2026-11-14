@@ -1,4 +1,4 @@
-    import crypto from "crypto";
+import crypto from "crypto";
 
 export const verifyPayHereNotification = (
   merchantId: string,
@@ -6,11 +6,9 @@ export const verifyPayHereNotification = (
   payhereAmount: string,
   payhereCurrency: string,
   statusCode: string,
-  receivedMd5sig: string
+  receivedMd5sig: string,
 ): boolean => {
-
-  const merchantSecret =
-    process.env.PAYHERE_MERCHANT_SECRET;
+  const merchantSecret = process.env.PAYHERE_MERCHANT_SECRET;
 
   if (!merchantSecret) {
     throw new Error("Merchant secret is missing");
@@ -26,16 +24,14 @@ export const verifyPayHereNotification = (
     .createHash("md5")
     .update(
       merchantId +
-      orderId +
-      payhereAmount +
-      payhereCurrency +
-      statusCode +
-      hashedSecret
+        orderId +
+        payhereAmount +
+        payhereCurrency +
+        statusCode +
+        hashedSecret,
     )
     .digest("hex")
     .toUpperCase();
 
-  return (
-    localMd5sig === receivedMd5sig.toUpperCase()
-  );
+  return localMd5sig === receivedMd5sig.toUpperCase();
 };

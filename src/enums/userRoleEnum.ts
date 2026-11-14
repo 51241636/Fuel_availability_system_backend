@@ -1,3 +1,5 @@
-export enum userRoles{
-    ADMIN,DRIVER,OWNER
+export enum userRoles {
+  ADMIN,
+  DRIVER,
+  OWNER,
 }

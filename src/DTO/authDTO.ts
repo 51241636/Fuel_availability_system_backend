@@ -1,5 +1,5 @@
-export interface AuthDTO{
-    username:string,
-    password:string
-    role:string
+export interface AuthDTO {
+  username: string;
+  password: string;
+  role: string;
 }

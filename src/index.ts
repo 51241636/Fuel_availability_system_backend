@@ -2,7 +2,7 @@ import express, { NextFunction, Request, Response } from "express";
 import connectDB from "./config/database";
 import userRouter from "../src/routes/userRoutes";
 // var cors = require('cors')
-import cors from 'cors';
+import cors from "cors";
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
@@ -12,50 +12,46 @@ import fuelRouter from "./routes/fuelRoute";
 import logOutRouter from "./routes/logOutRoute";
 import path from "path";
 import paymentRouter from "./routes/paymentRoute";
+import dns from "node:dns";
 
+// DNS Configuration
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
-const MONGO_URL = process.env.MONGO_URI || ""
+const MONGO_URL = process.env.MONGO_URI || "";
 const PORT: number = Number(process.env.PORT) || 3000;
 
 const app = express();
 const corsOptions: cors.CorsOptions = {
-  origin: 'http://localhost:5173', // Allow only your React app's origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE','PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true // Allow to transfer cookies with cross origin requests
+  origin: "https://fuel-availability-system-frontend.vercel.app", // Allow only your React app's origin
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true, // Allow to transfer cookies with cross origin requests
 };
 app.use(cors(corsOptions));
 
-
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: false }));
 
-app.use(cookieParser())
+app.use(cookieParser());
 
-app.use(
-    "/uploads",
-    express.static(path.join(process.cwd(), "uploads"))
-);
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
+connectDB();
 
-connectDB()
-
-app.use("/api",userRouter);
-app.use("/api",authRouter)
-app.use("/api",stationRouter)
-app.use("/api",fuelRouter)
-app.use("/api",logOutRouter)
-app.use("/api",paymentRouter)
-app.use((err:Error ,req:Request, res:Response, next:NextFunction) => {
+app.use("/api", userRouter);
+app.use("/api", authRouter);
+app.use("/api", stationRouter);
+app.use("/api", fuelRouter);
+app.use("/api", logOutRouter);
+app.use("/api", paymentRouter);
+app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.log(err.message);
-  res.status(500).json({ message:err.message });
+  res.status(500).json({ message: err.message });
 });
 
 // connectDB();
 // app.use("/api",)
 
-
 app.listen(process.env.PORT, () => {
-    console.log("Server running on port 3000");
+  console.log("Server running on port 3000");
 });
