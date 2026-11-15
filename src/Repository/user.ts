@@ -57,6 +57,18 @@ const userSchema = new Schema<IUser>({
     required: true,
     default: statusManage.ACTIVE,
   },
+  resetOtpHash: {
+  type: String,
+  default: null,
+},
+resetOtpExpires: {
+  type: Date,
+  default: null,
+},
+resetOtpAttempts: {
+  type: Number,
+  default: 0,
+},
 });
 
 const user = mongoose.model<IUser>("User", userSchema);

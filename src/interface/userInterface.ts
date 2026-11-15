@@ -14,4 +14,7 @@ export default interface IUser {
   userRole: string;
   paymentStatus: string;
   userStatus: statusManage;
+  resetOtpHash?: string | null;
+  resetOtpExpires?: Date | null;
+  resetOtpAttempts?: number;
 }

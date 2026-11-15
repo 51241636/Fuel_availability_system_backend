@@ -9,7 +9,11 @@ import { newAccessToken } from "../util/refreshToken";
 import { authenticate } from "../middlewares/authMiddleware";
 import { roleAuthenticate } from "../middlewares/rolebaseAuthetication";
 import upload from "../middlewares/upload";
-
+import {
+  forgotPassword,
+  verifyResetOTP,
+  resetPassword,
+} from "../controller/forgotPasswordController";
 const router = Router();
 
 router.put(
@@ -33,5 +37,11 @@ router.delete(
 );
 router.get("/getAllUsers", authenticate, getAllUsers);
 router.post("/generateNewToken", newAccessToken);
+
+
+// Forgot Password
+router.post("/forgotPassword", forgotPassword);
+router.post("/verifyResetOTP", verifyResetOTP);
+router.post("/resetPassword", resetPassword);
 
 export default router;

@@ -1,29 +1,32 @@
+
 import express, { NextFunction, Request, Response } from "express";
 import connectDB from "./config/database";
-import userRouter from "../src/routes/userRoutes";
-// var cors = require('cors')
+
 import cors from "cors";
-import "dotenv/config";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import mongoose from "mongoose";
+import path from "path";
+import dns from "node:dns";
+
+import userRouter from "./routes/userRoutes";
 import authRouter from "./routes/authRoute";
 import stationRouter from "./routes/fuelStationRoute";
 import fuelRouter from "./routes/fuelRoute";
 import logOutRouter from "./routes/logOutRoute";
-import path from "path";
 import paymentRouter from "./routes/paymentRoute";
-import dns from "node:dns";
+
+dotenv.config();
 
 // DNS Configuration
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
 
-const MONGO_URL = process.env.MONGO_URI || "";
-const PORT: number = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 3000;
 
 const app = express();
+
 const allowedOrigins = [
-  "https://fuel-availability-system-frontend.vercel.app",
-  "https://fuel-availability-system-frontend-z5og-7ichj0qeu-pis9.vercel.app",
+  "https://fuel-availability-system-frontend-3.vercel.app",
+  "https://fuel-availability-system-frontend-3ruk-git-main-pis9.vercel.app",
   "http://localhost:5173",
 ];
 
@@ -37,31 +40,53 @@ const corsOptions: cors.CorsOptions = {
   },
   credentials: true,
 };
+
 app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
 app.use(cookieParser());
 
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use(
+  "/uploads",
+  express.static(path.join(process.cwd(), "uploads"))
+);
 
-connectDB();
-
+// API Routes
 app.use("/api", userRouter);
 app.use("/api", authRouter);
 app.use("/api", stationRouter);
 app.use("/api", fuelRouter);
 app.use("/api", logOutRouter);
 app.use("/api", paymentRouter);
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.log(err.message);
-  res.status(500).json({ message: err.message });
+
+// Health Check
+app.get("/", (req, res) => {
+  res.status(200).json({
+    message: "PumpCheck Backend Running Successfully",
+  });
 });
 
-// connectDB();
-// app.use("/api",)
+// Error Handler
+app.use(
+  (err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err.message);
+    res.status(500).json({ message: err.message });
+  }
+);
 
-app.listen(process.env.PORT, () => {
-  console.log("Server running on port 3000");
-});
+// Start server after database connection
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, "0.0.0.0", () => {
+      console.log(`PumpCheck server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Server startup failed:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
