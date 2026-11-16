@@ -5,18 +5,19 @@ import bcrypt from "bcrypt";
 import user from "../Repository/user";
 import transporter from "../config/mailer";
 
-// Generate SHA-256 hash for OTP
+
 const hashOTP = (otp: string) => {
   return crypto.createHash("sha256").update(otp).digest("hex");
 };
 
-// 1. Send OTP to registered email
 export const forgotPassword = async (
   req: Request,
   res: Response,
 ) => {
   try {
     const email = String(req.body.email || "").trim().toLowerCase();
+
+    console.log(email)
 
     if (!email) {
       return res.status(400).json({
@@ -26,7 +27,7 @@ export const forgotPassword = async (
 
     const userDetails = await user.findOne({ email });
 
-    // Avoid revealing whether an email is registered
+  
     if (!userDetails) {
       return res.status(200).json({
         message: "If the email is registered, an OTP will be sent.",
@@ -76,7 +77,7 @@ export const forgotPassword = async (
   }
 };
 
-// 2. Verify OTP
+
 export const verifyResetOTP = async (
   req: Request,
   res: Response,
@@ -135,7 +136,7 @@ export const verifyResetOTP = async (
   }
 };
 
-// 3. Reset password
+
 export const resetPassword = async (
   req: Request,
   res: Response,
@@ -197,7 +198,6 @@ export const resetPassword = async (
 
     userDetails.password = await bcrypt.hash(newPassword, saltRound);
 
-    // Clear OTP after successful password reset
     userDetails.resetOtpHash = null;
     userDetails.resetOtpExpires = null;
     userDetails.resetOtpAttempts = 0;

@@ -81,6 +81,9 @@ export const registerUser = async (req: Request, res: Response) => {
           });
         }
 
+        const fullName = saved.firstName.trim().split(/\s+/);
+
+
         const hash = paymentService(orderId, amount, savedPayment.currency);
 
         if (hash) {
@@ -95,8 +98,8 @@ export const registerUser = async (req: Request, res: Response) => {
               cancel_url: process.env.PAYHERE_CANCEL_URL,
               notify_url: process.env.PAYHERE_NOTIFY_URL,
 
-              first_name: saved.firstName,
-              last_name: saved.firstName,
+              first_name: fullName[0],
+              last_name: fullName.slice(1).join(" ") || fullName[0],
               email: saved.email,
               phone: saved.contact,
               address: saved.address,

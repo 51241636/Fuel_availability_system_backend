@@ -20,11 +20,17 @@ export const loginService = async (authDTO: AuthDTO) => {
       userRole: authDTO.role,
     });
 
-    await console.log("login user details : ", loginUserDetails);
+    
 
     if (!loginUserDetails || loginUserDetails.userRole !== authDTO.role) {
       console.log("User not found or role does not match");
       throw new Error("User not found or password is incorrect");
+    }
+
+    if(loginUserDetails?.userRole == "owner"){
+      if(loginUserDetails.paymentStatus === "PENDING"){
+         throw new Error("can't login owner because payment status is pending");
+      }
     }
     const isMatch = await bcrypt.compare(
       authDTO.password,
