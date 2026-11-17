@@ -25,7 +25,7 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/",
     });
 
@@ -38,7 +38,7 @@ export const login = async (req: Request, res: Response) => {
     const message = error instanceof Error ? error.message : "login failed";
     const status =
       message === "user not found or user password not correct" ||
-      "username and password reqired"
+      message === "username and password reqired"
         ? 404
         : 401;
     return res.status(status).json({
@@ -82,7 +82,6 @@ export const registerUser = async (req: Request, res: Response) => {
         }
 
         const fullName = saved.firstName.trim().split(/\s+/);
-
 
         const hash = paymentService(orderId, amount, savedPayment.currency);
 

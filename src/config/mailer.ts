@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import nodemailer from "nodemailer";
 import path from "path";
 
-// Load .env from backend root folder
+
 dotenv.config({
   path: path.resolve(process.cwd(), ".env"),
 });
