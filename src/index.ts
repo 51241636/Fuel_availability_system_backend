@@ -25,7 +25,7 @@ const PORT = Number(process.env.PORT) || 3000;
 const app = express();
 
 const allowedOrigins = [
-  "https://fuel-availability-system-frontend-z-two.vercel.app",
+  "https://fuel-availability-system-frontend-8.vercel.app",
   "https://fuel-availability-system-frontend-8jo2-git-main-pis9.vercel.app",
   "http://localhost:5173",
 ];
