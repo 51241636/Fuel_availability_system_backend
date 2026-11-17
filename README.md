@@ -6,8 +6,8 @@ The backend is built with Node.js, Express.js, TypeScript and MongoDB. It provid
 
 ## Live API
 
-- **Backend API:** https://fuel-availability-system-backend.enzonic.dev
-- **Frontend application:** https://fuel-availability-system-frontend-z-two.vercel.app
+- **Backend API:** https://github.com/51241636/Fuel_availability_system_backend
+- **Frontend application:** https://fuel-availability-system-frontend-8jo2-git-main-pis9.vercel.app/
 
 > Confirm that these deployment URLs are still active before submitting the project.
 
